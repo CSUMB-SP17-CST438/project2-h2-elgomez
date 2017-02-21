@@ -16,8 +16,21 @@ export class Content extends React.Component {
  }
     componentDidMount() {
         Socket.on('all numbers', (data) => {this.setState({'numbers': data['numbers']});});
+        console.log("checking FB");
+        FB.getLoginStatus((response) => {if (response.status == 'connected') 
+            {
+                Socket.emit('new number', {'facebook_user_token':response.authResponse.accessToken,'number': "connected",});
+            }
+        let auth = gapi.auth2.getAuthInstance();
+        let user = auth.currentUser.get();
+                
+        if (user.isSignedIn()) 
+        {
+            Socket.emit('new number', {'google_user_token':user.getAuthResponse().id_token,'facebook_user_token': '','number': "Connected"});
+        }
+        });
     }
-    
+        
     render() {
        
         let numbers = this.state.numbers.map((n, index) =>
@@ -45,6 +58,8 @@ export class Content extends React.Component {
             <input type = "text" id = "message_in"></input> 
          <Button />
             <ul id = 'myUL'>{numbers}</ul>
+            
+            
          </div>
          
          );

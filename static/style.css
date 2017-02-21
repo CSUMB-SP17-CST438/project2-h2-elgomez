@@ -41,7 +41,8 @@ html {
 #left_side{
     width: 210px;
     height: 700px;
-    overflow:hidden; 
+    overflow:visible;
+    overflow:auto; 
     position:absolute;
     font-size: 16px;
 }
@@ -54,7 +55,7 @@ html {
     padding-bottom: 30px
  }
 body{
-            background: url('http://i.imgur.com/d2qNxxm.jpg') no-repeat scroll;
-            background-size: 100% 100%;
-            min-height: 700px;
+        background: url('http://i.imgur.com/d2qNxxm.jpg') no-repeat scroll;
+        background-size: 100% 100%;
+        min-height: 700px;
 }

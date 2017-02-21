@@ -19,18 +19,9 @@ def on_connect():
    
     
 @socketio.on('disconnect')
-def on_disconnect(data):
+def on_disconnect():
     global userCount
     userCount -=1
-    response = requests.get('https://graph.facebook.com/v2.8/me?fields=id%2Cname%2Cpicture&access_token=' + data['facebook_user_token'])
-    json = response.json()
-    if data['facebook_user_token'] != '':
-        
-        all_mah_numbers.append({
-                'name': 'ChickenBot_version '+ str(chickenBotVer),
-                'picture': 'https://cdn4.iconfinder.com/data/icons/social-productivity-line-art-5/128/chatbot-128.png',
-                'number': json['name'] + "has disconnected"
-            })
     
     
 
@@ -40,7 +31,15 @@ chickenBotVer = 1
 def on_new_number(data):
     response = requests.get('https://graph.facebook.com/v2.8/me?fields=id%2Cname%2Cpicture&access_token=' + data['facebook_user_token'])
     json = response.json()
-    
+    if(data['number'] == "connected"):
+        global chickenBotVer
+        all_mah_numbers.append({
+            'name': 'ChickenBot '+ str(chickenBotVer),
+            'picture': 'https://cdn4.iconfinder.com/data/icons/social-productivity-line-art-5/128/chatbot-128.png',
+            'number':json['name'] + " " + data['number']
+        })
+        socketio.emit('all numbers', {'numbers': all_mah_numbers})
+        return
     if data['facebook_user_token'] != '':
         all_mah_numbers.append({
             'name': json['name'],
@@ -55,6 +54,8 @@ def on_new_number(data):
             'picture': json2['picture'],
             'number': data['number']
         })
+        
+###Bot functionality --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     socketio.emit('all numbers', {'numbers': all_mah_numbers})
     botCheck = data['number']
     botHelp = '!! help'
@@ -62,6 +63,7 @@ def on_new_number(data):
     botSay = '!! say'
     botJoke = '!! joke'
     botCross = '!! cross'
+    
     if botCheck[0:7] == botHelp:
         global chickenBotVer
         all_mah_numbers.append({
@@ -117,7 +119,11 @@ def on_new_number(data):
             'picture': 'https://cdn4.iconfinder.com/data/icons/social-productivity-line-art-5/128/chatbot-128.png',
             'number': "unknown command: " + botCheck
         })
+##---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
     socketio.emit('all numbers', {'numbers': all_mah_numbers})
+    
+    
 socketio.run(
     app,
     host=os.getenv('IP', '0.0.0.0'),
