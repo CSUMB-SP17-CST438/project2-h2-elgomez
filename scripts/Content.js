@@ -75,8 +75,11 @@ export class Content extends React.Component {
             
          <Button />
          <ul id = 'myUL3'>
+         
+         
         <ul id = 'myUL'>{numbers}</ul>
         <ul id = 'myUL2'>{users}</ul>
+        
         </ul>
        
       
