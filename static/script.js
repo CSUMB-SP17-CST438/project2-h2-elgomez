@@ -13148,7 +13148,7 @@ var Content = exports.Content = function (_React$Component) {
                 var user = auth.currentUser.get();
 
                 if (user.isSignedIn()) {
-                    _Socket.Socket.emit('new number', { 'google_user_token': user.getAuthResponse().id_token, 'facebook_user_token': '', 'number': text });
+                    _Socket.Socket.emit('new number', { 'google_user_token': user.getAuthResponse().id_token, 'facebook_user_token': '', 'number': "connected" });
                 }
             });
         }

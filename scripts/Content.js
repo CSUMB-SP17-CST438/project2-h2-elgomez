@@ -28,10 +28,8 @@ export class Content extends React.Component {
                 
         if (user.isSignedIn()) 
         {
-            Socket.emit('new number', {'google_user_token':user.getAuthResponse().id_token,'facebook_user_token': '','number': text,});
+            Socket.emit('new number', {'google_user_token':user.getAuthResponse().id_token,'facebook_user_token': '','number': "connected",});
         }
-    
-
 
     });
 }
