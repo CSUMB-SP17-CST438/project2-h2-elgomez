@@ -15,4 +15,6 @@ Another Known issue is the disconnect not removing users from the user list. It 
 I am sure that there is a more efficient and simple way to do this using reacts componentDidunmount() function, but I had trouble finding
 proper documentation on how to use it.
 
+The last known problem is that the page has a scroll bar on some resolutions and not others. on 1080p monitors it does not, yet on some lower resolutuions it does. I thought this would be fixed by using vh in my css file, but there is probably soemthing else that is causing this problem.
+
 #### if possible, I would like to work on the postgres and userlist implementation more and gain back any points that I missed due to these not working as expected.
