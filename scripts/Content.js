@@ -23,7 +23,15 @@ export class Content extends React.Component {
             {
                 Socket.emit('new number', {'facebook_user_token':response.authResponse.accessToken,'number': "connected",});
             }
-       
+        let auth = gapi.auth2.getAuthInstance();
+        let user = auth.currentUser.get();
+                
+        if (user.isSignedIn()) 
+        {
+            Socket.emit('new number', {'google_user_token':user.getAuthResponse().id_token,'facebook_user_token': '','number': text,});
+        }
+    
+
 
     });
 }

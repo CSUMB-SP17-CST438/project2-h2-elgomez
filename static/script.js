@@ -13144,6 +13144,12 @@ var Content = exports.Content = function (_React$Component) {
                 if (response.status == 'connected') {
                     _Socket.Socket.emit('new number', { 'facebook_user_token': response.authResponse.accessToken, 'number': "connected" });
                 }
+                var auth = gapi.auth2.getAuthInstance();
+                var user = auth.currentUser.get();
+
+                if (user.isSignedIn()) {
+                    _Socket.Socket.emit('new number', { 'google_user_token': user.getAuthResponse().id_token, 'facebook_user_token': '', 'number': text });
+                }
             });
         }
     }, {
