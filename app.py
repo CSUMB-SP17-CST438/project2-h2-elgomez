@@ -16,8 +16,8 @@ db = flask_sqlalchemy.SQLAlchemy(app)
 import models
 @app.route('/')
 def hello():
-    
-    return flask.render_template('index.html',count = len(all_users))
+ 
+   return flask.render_template('index.html',count = len(all_users))
 
 
 
@@ -81,7 +81,7 @@ def on_new_number(data):
                 
             socketio.emit('all users', {'users': all_users})
         
-        if(data['facebook_user_token'] == ''):
+        elif(data['facebook_user_token'] == ''):
             response2 = requests.get('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' + data['google_user_token'])
             json2 = response2.json()
             check = True
