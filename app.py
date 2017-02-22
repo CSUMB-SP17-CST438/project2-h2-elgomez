@@ -10,14 +10,16 @@ socketio = flask_socketio.SocketIO(app)
 
 all_users = []
 all_mah_numbers = []
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://elias:lakers32@8080/postgres'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://elias:lakers32@localhost/postgres'
 db = flask_sqlalchemy.SQLAlchemy(app)
 
 import models
 @app.route('/')
 def hello():
  
-   return flask.render_template('index.html',count = len(all_users))
+   
+
+    return flask.render_template('index.html',count = len(all_users))
 
 
 
@@ -143,14 +145,14 @@ def on_new_number(data):
     botCross = '!! cross'
     
     if botCheck[0:7] == botHelp:
-        
+       
         all_mah_numbers.append({
             'name': 'ChickenBot '+ str(chickenBotVer),
             'picture': 'https://cdn4.iconfinder.com/data/icons/social-productivity-line-art-5/128/chatbot-128.png',
             'number': 'Commands: !! help(help message) !! about(about the chatroom) !! say (make me say something: ex!! say <something>) !! joke (I will tell a joke) and !! cross(make me cross the road)'
         })
     elif botCheck[0:6] == botSay:
-      
+       
         word = botCheck
         all_mah_numbers.append({
             'name': 'ChickenBot_version '+ str(chickenBotVer),
@@ -158,14 +160,14 @@ def on_new_number(data):
             'number': word[6:]
         })
     elif botCheck[0:8] == botAbout:
-        
+       
         all_mah_numbers.append({
             'name': 'ChickenBot'+ str(chickenBotVer),
             'picture': 'https://cdn4.iconfinder.com/data/icons/social-productivity-line-art-5/128/chatbot-128.png',
             'number': "hello This is chicken bots chatroom, please do not kick me. This app is used for chatting and stuff I guess, Please refer to this github link for more info: "
         })
     elif botCheck[0:7] == botJoke:
-        
+      
         jokes = ['guess what...chickenBot','why did chickenBot cross the road? because chickenBots road crossing function was invoked.','what do you call a fake noodle? An impasta!',
         'What did one plate say to the other?.... Lunch is on me.','Why did the hipster fall in the lake?.....He went ice skating before it was cool.',
         'Why can\'t you trust atoms?....Because they make up everything!']
@@ -176,7 +178,7 @@ def on_new_number(data):
             'number': random.choice(jokes)
         })
     elif botCheck[0:8] == botCross:
-       
+    
         r = random.randint(0,1)
         string = ''
         if r == 1:
@@ -191,7 +193,7 @@ def on_new_number(data):
             'number': string
         })
     elif botCheck[0:2] == '!!' and botCheck[0:8] != botCross and botCheck[0:7] != botJoke and botCheck[0:8] != botAbout and botCheck[0:6] != botSay and botCheck[0:7] != botHelp:
-       
+ 
         all_mah_numbers.append({
             'name': 'ChickenBot_Version ' + str(chickenBotVer),
             'picture': 'https://cdn4.iconfinder.com/data/icons/social-productivity-line-art-5/128/chatbot-128.png',
