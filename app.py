@@ -1,5 +1,6 @@
 import os
-import flask,flask_sqlalchemy
+import flask
+import flask_sqlalchemy
 import flask_socketio
 import requests
 import random
