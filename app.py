@@ -1,37 +1,69 @@
 import os
-import flask
+import flask,flask_sqlalchemy
 import flask_socketio
 import requests
 import random
 
+
 app = flask.Flask(__name__)
 socketio = flask_socketio.SocketIO(app)
 
+all_users = []
+all_mah_numbers = []
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://elias:lakers32@8080/postgres'
+db = flask_sqlalchemy.SQLAlchemy(app)
+
+import models
 @app.route('/')
 def hello():
-    return flask.render_template('index.html')
-all_users = []
-userCount = 0
+ 
+   
+
+    return flask.render_template('index.html',count = len(all_users))
+
+
+
 @socketio.on('connect')
 def on_connect():
-    global userCount
-    userCount +=1
-   
+    print "someone connected"
+    socketio.emit('all numbers', {'numbers': all_mah_numbers})
+    socketio.emit('all users', {'users': all_users})
     
 @socketio.on('disconnect')
 def on_disconnect():
-    global userCount
-    userCount -=1
+    print "someone disconnected"
+    all_mah_numbers.append({
+            'name': 'ChickenBot '+ str(chickenBotVer),
+            'picture': 'https://cdn4.iconfinder.com/data/icons/social-productivity-line-art-5/128/chatbot-128.png',
+            'number': "A user disconnected"
+        })
+    socketio.emit('all numbers', {'numbers': all_mah_numbers})
+    socketio.emit('all users', {'users': all_users})
     
+    
+@socketio.on('user_Count')
+def userCount():
+    global all_users
+    count = len(all_users)
+    return count
     
 
-all_mah_numbers = []
+
 chickenBotVer = 1
 @socketio.on('new number')
 def on_new_number(data):
     response = requests.get('https://graph.facebook.com/v2.8/me?fields=id%2Cname%2Cpicture&access_token=' + data['facebook_user_token'])
     json = response.json()
+    check = True
+    ##connected user messages--------------------------------------------------------------------------------------------------------------------------------------------
     if(data['number'] == "connected"):
+        check = True
+        for key in all_users:
+            
+            if key['name'] == json['name']:
+                check = False
+                socketio.emit('all users', {'users': all_users})
+             
         global chickenBotVer
         all_mah_numbers.append({
             'name': 'ChickenBot '+ str(chickenBotVer),
@@ -39,21 +71,47 @@ def on_new_number(data):
             'number':json['name'] + " " + data['number']
         })
         socketio.emit('all numbers', {'numbers': all_mah_numbers})
+        
+        if check == True:
+            all_users.append({
+                'name': json['name'],
+                'picture': json['picture']['data']['url'],
+            })
+            
+        socketio.emit('all users', {'users': all_users})
+        
         return
+    ##---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
     if data['facebook_user_token'] != '':
         all_mah_numbers.append({
             'name': json['name'],
             'picture': json['picture']['data']['url'],
             'number': data['number']
         })
+        socketio.emit('all numbers', {'numbers': all_mah_numbers})
     elif data['facebook_user_token'] == '' :
         response2 = requests.get('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' + data['google_user_token'])
         json2 = response2.json()
+        
+           ##connected user messages--------------------------------------------------------------------------------------------------------------------------------------------
+        if(data['number'] == "connected"):
+            global chickenBotVer
+            all_mah_numbers.append({
+                'name': 'ChickenBot '+ str(chickenBotVer),
+                'picture': 'https://cdn4.iconfinder.com/data/icons/social-productivity-line-art-5/128/chatbot-128.png',
+                'number':json['name'] + " " + data['number']
+            })
+            socketio.emit('all numbers', {'numbers': all_mah_numbers})
+    ##---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
+        return
         all_mah_numbers.append({
             'name': json2['name'],
             'picture': json2['picture'],
             'number': data['number']
         })
+        socketio.emit('all numbers', {'numbers': all_mah_numbers})
         
 ###Bot functionality --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     socketio.emit('all numbers', {'numbers': all_mah_numbers})
@@ -122,12 +180,13 @@ def on_new_number(data):
 ##---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     socketio.emit('all numbers', {'numbers': all_mah_numbers})
+    socketio.emit('all users', {'users': all_users})
     
-    
-socketio.run(
-    app,
-    host=os.getenv('IP', '0.0.0.0'),
-    port=int(os.getenv('PORT', 8080)),
-    debug=True
-)
+if __name__ == '__main__': 
+    socketio.run(
+        app,
+        host=os.getenv('IP', '0.0.0.0'),
+        port=int(os.getenv('PORT', 8080)),
+        debug=True
+    )
 

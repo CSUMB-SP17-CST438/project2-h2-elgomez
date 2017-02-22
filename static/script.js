@@ -13121,7 +13121,8 @@ var Content = exports.Content = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).call(this, props));
 
         _this.state = {
-            'numbers': []
+            'numbers': [],
+            'users': []
         };
 
         return _this;
@@ -13135,16 +13136,13 @@ var Content = exports.Content = function (_React$Component) {
             _Socket.Socket.on('all numbers', function (data) {
                 _this2.setState({ 'numbers': data['numbers'] });
             });
-            console.log("checking FB");
+            _Socket.Socket.on('all users', function (data) {
+                _this2.setState({ 'users': data['users'] });
+            });
+
             FB.getLoginStatus(function (response) {
                 if (response.status == 'connected') {
                     _Socket.Socket.emit('new number', { 'facebook_user_token': response.authResponse.accessToken, 'number': "connected" });
-                }
-                var auth = gapi.auth2.getAuthInstance();
-                var user = auth.currentUser.get();
-
-                if (user.isSignedIn()) {
-                    _Socket.Socket.emit('new number', { 'google_user_token': user.getAuthResponse().id_token, 'facebook_user_token': '', 'number': "Connected" });
                 }
             });
         }
@@ -13160,6 +13158,14 @@ var Content = exports.Content = function (_React$Component) {
                     n.name,
                     ': ',
                     n.number
+                );
+            });
+            var users = this.state.users.map(function (n, index) {
+                return React.createElement(
+                    'li',
+                    { key: index },
+                    React.createElement('img', { src: n.picture }),
+                    n.name
                 );
             });
 
@@ -13186,8 +13192,17 @@ var Content = exports.Content = function (_React$Component) {
                 React.createElement(_Button.Button, null),
                 React.createElement(
                     'ul',
-                    { id: 'myUL' },
-                    numbers
+                    { id: 'myUL3' },
+                    React.createElement(
+                        'ul',
+                        { id: 'myUL' },
+                        numbers
+                    ),
+                    React.createElement(
+                        'ul',
+                        { id: 'myUL2' },
+                        users
+                    )
                 )
             );
         }
