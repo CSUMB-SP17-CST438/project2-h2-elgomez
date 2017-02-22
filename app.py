@@ -12,7 +12,7 @@ all_users = []
 all_mah_numbers = []
 
 
-import models
+
 @app.route('/')
 def hello():
  
