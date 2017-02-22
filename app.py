@@ -10,8 +10,7 @@ socketio = flask_socketio.SocketIO(app)
 
 all_users = []
 all_mah_numbers = []
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://elias:lakers32@localhost/postgres'
-db = flask_sqlalchemy.SQLAlchemy(app)
+
 
 import models
 @app.route('/')
@@ -100,13 +99,13 @@ def on_new_number(data):
                     'picture': 'https://cdn4.iconfinder.com/data/icons/social-productivity-line-art-5/128/chatbot-128.png',
                     'number':json2['name'] + " " + data['number']
                 })
-        socketio.emit('all numbers', {'numbers': all_mah_numbers})
+            socketio.emit('all numbers', {'numbers': all_mah_numbers})
         
-        if check == True:
-            all_users.append({
-                'name': json2['name'],
-                'picture': json2['picture']
-            })
+            if check == True:
+                all_users.append({
+                    'name': json2['name'],
+                    'picture': json2['picture']
+                })
         
         
 ##---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -203,12 +202,11 @@ def on_new_number(data):
 
     socketio.emit('all numbers', {'numbers': all_mah_numbers})
     socketio.emit('all users', {'users': all_users})
-    
-if __name__ == '__main__': 
-    socketio.run(
-        app,
-        host=os.getenv('IP', '0.0.0.0'),
-        port=int(os.getenv('PORT', 8080)),
-        debug=True
-    )
+
+socketio.run(
+    app,
+    host=os.getenv('IP', '0.0.0.0'),
+    port=int(os.getenv('PORT', 8080)),
+    debug=True
+)
 
