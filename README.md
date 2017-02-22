@@ -15,5 +15,4 @@ Another Known issue is the disconnect not removing users from the user list. It 
 I am sure that there is a more efficient and simple way to do this using reacts componentDidunmount() function, but I had trouble finding
 proper documentation on how to use it.
 
-#### if possible, I would like to work on the postgres and userlist implementation more and gain back any points that I missed due to these 
-not working as expected.
+#### if possible, I would like to work on the postgres and userlist implementation more and gain back any points that I missed due to these not working as expected.
