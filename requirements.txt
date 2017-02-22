@@ -1,4 +1,5 @@
-Flask
+flask
 flask-socketio
+requests
 psycop2g
 Flask-SQLAlchemy
