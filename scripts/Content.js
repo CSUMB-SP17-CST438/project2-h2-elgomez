@@ -43,6 +43,7 @@ export class Content extends React.Component {
                 {n.name}: {n.number}
             </li>
         );
+        
          let users = this.state.users.map((n, index) =>
            <li key={index}>
                 <img src={n.picture} />
@@ -51,7 +52,7 @@ export class Content extends React.Component {
         );
 
         return (
-            
+        
          <div>
              
     
@@ -77,7 +78,7 @@ export class Content extends React.Component {
          <ul id = 'myUL3'>
          
          
-        <ul id = 'myUL'>{numbers}</ul>
+        <ul id = 'myUL'> {numbers}</ul>
         <ul id = 'myUL2'>{users}</ul>
         
         </ul>

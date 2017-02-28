@@ -13166,6 +13166,7 @@ var Content = exports.Content = function (_React$Component) {
                     n.number
                 );
             });
+
             var users = this.state.users.map(function (n, index) {
                 return React.createElement(
                     'li',
@@ -13202,6 +13203,7 @@ var Content = exports.Content = function (_React$Component) {
                     React.createElement(
                         'ul',
                         { id: 'myUL' },
+                        ' ',
                         numbers
                     ),
                     React.createElement(
