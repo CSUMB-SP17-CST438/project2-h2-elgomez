@@ -3,6 +3,7 @@ import flask
 import flask_socketio
 import requests
 import random
+from rfc3987 import parse
 
 
 app = flask.Flask(__name__)
@@ -77,7 +78,8 @@ def on_new_message(data):
 def on_new_number(data):
     response = requests.get('https://graph.facebook.com/v2.8/me?fields=id%2Cname%2Cpicture&access_token=' + data['facebook_user_token'])
     json = response.json()
-    
+    url = parse(data['number'], rule='IRI')
+    print url
     global chickenBotVer
     check = True
     ##connected user messages--------------------------------------------------------------------------------------------------------------------------------------------
@@ -159,7 +161,7 @@ def on_new_number(data):
     socketio.emit('all users', {'users': all_users})
     
     
-     ###Bot functionality --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+###Bot functionality --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     socketio.emit('all numbers', {'numbers': all_mah_numbers})
     botCheck = data['number']
     botHelp = '!! help'
