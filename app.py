@@ -4,6 +4,7 @@ import flask_socketio
 import requests
 import random
 from rfc3987 import parse
+import functions
 
 
 app = flask.Flask(__name__)
@@ -161,129 +162,11 @@ def on_new_number(data):
     
     
 ###Bot functionality --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    socketio.emit('all numbers', {'numbers': all_mah_numbers})
-    botCheck = data['number']
-    botHelp = '!! help'
-    botAbout= '!! about'
-    botSay = '!! say'
-    botJoke = '!! joke'
-    botCross = '!! cross'
-    botRank = '!! rank'
-    botMaster = '!! master'
+    spl = str.split(str(data['number']))
+    print spl[0]
+    if(spl[0] == "!!"):
+        all_mah_numbers.append(functions.get_chatbot_response(data['number']))
     
-    if botCheck[0:7] == botHelp:
-       
-        all_mah_numbers.append({
-            'name': 'ChickenBot '+ str(chickenBotVer),
-            'picture': 'https://cdn4.iconfinder.com/data/icons/social-productivity-line-art-5/128/chatbot-128.png',
-            'number': 'Commands: !! help(help message) !! about(about the chatroom) !! say (make me say something: ex!! say <something>) !! joke (I will tell a joke)  !! cross(make me cross the road)' + 
-            " !! rank <region> <summonerName>: get the rank of a summoner from league of legends, Example (!! rank na doublelift)."
-        })
-    elif botCheck[0:7] == botRank:
-        spl = str.split(str(data['number']))
-        print spl[2] + " " + spl[3]
-        region = spl[2]
-        summoner = str(spl[3])
-        RiotJson = GetSummonerData(region,summoner,riotKey)
-        sn = RiotJson[summoner]['name']
-        ID = RiotJson[summoner]['id']
-        ID = str(ID)
-        print ID
-        RiotJson2 = GetRankedData(region,ID,riotKey)
-        expression = str(RiotJson2[ID][0]['tier'])
-        say = ""
-        if(expression =="SILVER"):
-            say = "trash noob loser"
-        if(expression =="GOLD"):
-            say = "Moderatley garbage"
-        if(expression =="PLATINUM"):
-            say = "You think you are better than me?"
-        if(expression =="DIAMOND"):
-            say = "Whatever xiao"
-        if(expression =="MASTER"):
-            say = "garbage master elo"
-        if(expression =="CHALLENGER"):
-            say = "alright whatever man"
-        if(expression =="BRONZE"):
-            say = "Bottom of the barrel"
-        all_mah_numbers.append({
-            'name': 'ChickenBot '+ str(chickenBotVer),
-            'picture': 'https://cdn4.iconfinder.com/data/icons/social-productivity-line-art-5/128/chatbot-128.png',
-            'number': "the summoner: " + sn + " has a rank of " + str(RiotJson2[ID][0]['tier']) + " " + str(RiotJson2[ID][0]['entries'][0]['division']) + " " + say
-        })
-    # elif botCheck[0:9] == botMaster:
-    #     spl = str.split(str(data['number']))
-        
-    #     region = spl[2]
-    #     summoner = str(spl[3])
-    #     RiotJson = GetSummonerData(region,summoner,riotKey)
-    #     ID = RiotJson[summoner]['id']
-    #     ID = str(ID)
-    #     RiotJson2 = GetMasteryData(3,ID,riotKey)
-    #     print "Champ ID: " + str(RiotJson2[0]['championId'])
-    #     champNum1 = str(RiotJson2[0]['championId'])
-    #     champNum2 = str(RiotJson2[1]['championId'])
-    #     champNum3 = str(RiotJson2[2]['championId'])
-        
-    #     RiotJson3 = GetChampData(riotKey,champNum1)
-       
-    #     champ1 = RiotJson3[champNum1]['name'] + RiotJson3[champNum1]['title']
-       
-        
-    #     all_mah_numbers.append({
-    #         'name': 'ChickenBot '+ str(chickenBotVer),
-    #         'picture': 'https://cdn4.iconfinder.com/data/icons/social-productivity-line-art-5/128/chatbot-128.png',
-    #         'number': "the summoner: " + summoner + " top played champions are: " + champ1 + ", " + champ2 + " and " + champ3
-    #     })
-    elif botCheck[0:6] == botSay:
-       
-        word = botCheck
-        all_mah_numbers.append({
-            'name': 'ChickenBot_version '+ str(chickenBotVer),
-            'picture': 'https://cdn4.iconfinder.com/data/icons/social-productivity-line-art-5/128/chatbot-128.png',
-            'number': word[6:]
-        })
-    elif botCheck[0:8] == botAbout:
-       
-        all_mah_numbers.append({
-            'name': 'ChickenBot'+ str(chickenBotVer),
-            'picture': 'https://cdn4.iconfinder.com/data/icons/social-productivity-line-art-5/128/chatbot-128.png',
-            'number': "hello This is chicken bots chatroom, please do not kick me. This app is used for chatting and stuff I guess, Please refer to this github link for more info: "
-        })
-    elif botCheck[0:7] == botJoke:
-      
-        jokes = ['guess what...chickenBot','why did chickenBot cross the road? because chickenBots road crossing function was invoked.','what do you call a fake noodle? An impasta!',
-        'What did one plate say to the other?.... Lunch is on me.','Why did the hipster fall in the lake?.....He went ice skating before it was cool.',
-        'Why can\'t you trust atoms?....Because they make up everything!']
-        
-        all_mah_numbers.append({
-            'name': 'ChickenBot_Version ' + str(chickenBotVer),
-            'picture': 'https://cdn4.iconfinder.com/data/icons/social-productivity-line-art-5/128/chatbot-128.png',
-            'number': random.choice(jokes)
-        })
-    elif botCheck[0:8] == botCross:
-    
-        r = random.randint(0,1)
-        string = ''
-        if r == 1:
-            string = "ChickenBot made it across safely"
-        else:
-            string = "I hope you are happy...ChickenBot has perished and I have taken his place"
-            chickenBotVer +=1
-            
-        all_mah_numbers.append({
-            'name': 'ChickenBot_Version ' + str(chickenBotVer),
-            'picture': 'https://cdn4.iconfinder.com/data/icons/social-productivity-line-art-5/128/chatbot-128.png',
-            'number': string
-        })
-    elif botCheck[0:2] == '!!' and botCheck[0:8] != botCross and botCheck[0:7] != botJoke and botCheck[0:8] != botAbout and botCheck[0:6] != botSay and botCheck[0:7] != botHelp:
- 
-        all_mah_numbers.append({
-            'name': 'ChickenBot_Version ' + str(chickenBotVer),
-            'picture': 'https://cdn4.iconfinder.com/data/icons/social-productivity-line-art-5/128/chatbot-128.png',
-            'number': "unknown command: " + botCheck
-        })
-##---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     socketio.emit('all numbers', {'numbers': all_mah_numbers})
     socketio.emit('all users', {'users': all_users})

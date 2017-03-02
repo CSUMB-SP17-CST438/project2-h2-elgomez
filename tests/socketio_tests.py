@@ -32,8 +32,7 @@ class SocketIOTestCase(unittest.TestCase):
     #         data['your message'],
     #         u'Potatoes are cool!'
     #     )
-    print "testing file"
-
+    print ""
 
 if __name__ == '__main__':
     unittest.main()
