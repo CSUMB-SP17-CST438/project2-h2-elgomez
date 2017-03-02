@@ -2,3 +2,4 @@ Flask
 requests
 flask-socketio
 Flask-SQLAlchemy
+rfc3987 

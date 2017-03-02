@@ -78,8 +78,7 @@ def on_new_message(data):
 def on_new_number(data):
     response = requests.get('https://graph.facebook.com/v2.8/me?fields=id%2Cname%2Cpicture&access_token=' + data['facebook_user_token'])
     json = response.json()
-    url = parse(data['number'], rule='IRI')
-    print url
+    
     global chickenBotVer
     check = True
     ##connected user messages--------------------------------------------------------------------------------------------------------------------------------------------
