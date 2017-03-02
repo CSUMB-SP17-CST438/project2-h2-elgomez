@@ -3,4 +3,4 @@ deployment:
     production:
         branch: master
         heroku:
-            appname: guarded-anchorage-51000
+            appname: enigmatic-lake-69076
