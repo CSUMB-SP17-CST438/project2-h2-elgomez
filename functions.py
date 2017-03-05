@@ -9,8 +9,6 @@ def get_chatbot_response(data):
     botCross = '!! cross'
     botRank = '!! rank'
     botMaster = '!! master'
-    all_mah_numbers = []
-    chickenBotVer = 1
     message = ""
     riotKey = '60512c7b-5391-4678-a7c4-f8b0ab0230cb'
     if botCheck[0:7] == botHelp:

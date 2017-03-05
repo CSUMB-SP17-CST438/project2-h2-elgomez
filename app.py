@@ -5,6 +5,7 @@ import requests
 import random
 from rfc3987 import parse
 import functions
+import links
 
 
 app = flask.Flask(__name__)
@@ -13,26 +14,6 @@ socketio = flask_socketio.SocketIO(app)
 all_users = []
 all_mah_numbers = []
 riotKey = '60512c7b-5391-4678-a7c4-f8b0ab0230cb'
-
-def GetSummonerData(region,summonerName,key):
-    url = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v1.4/summoner/by-name/" + summonerName + "?api_key=" + key
-    response = requests.get(url)
-    
-    return response.json()
-def GetRankedData(region,ID,key):
-    url = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v2.5/league/by-summoner/" + ID + "/entry?api_key=" + key
-    response = requests.get(url)
-    print response
-    return response.json()
-def GetMasteryData(count,ID,key):
-    url = "https://na.api.pvp.net/championmastery/location/NA1/player/" + ID + "/topchampions?count=3&api_key=" + key
-    response = requests.get(url)
-    print response
-    return response.json()
-def GetChampData(key,id):
-    url = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion?dataById=true&api_key=60512c7b-5391-4678-a7c4-f8b0ab0230cb"
-    response = requests.get(url)
-    return response
 
 @app.route('/')
 def hello():
@@ -132,14 +113,15 @@ def on_new_number(data):
                     'name': json2['name'],
                     'picture': json2['picture']
                 })
-        
-        
 ##---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
        
         
             
 ## APPEND Facebook user message to list---------------------------------------------------------------------------------------------------------------------------------------------
     elif (data['number'] != "connected"):
+        
+        
+        print "*****************************************************:" + data['facebook_user_token']
         if data['facebook_user_token'] != '':
             all_mah_numbers.append({
                 'name': json['name'],
@@ -154,24 +136,17 @@ def on_new_number(data):
                 'picture': json2['picture'],
                 'number': data['number']
             })
-##-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-   
+##---------------------------------------------------------------------------------------------------------------------------------------------
     socketio.emit('all numbers', {'numbers': all_mah_numbers})
     socketio.emit('all users', {'users': all_users})
-    
-    
-###Bot functionality --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+###Bot functionality --------------------------------------------------------------------------------------------------------------------------
     spl = str.split(str(data['number']))
-    print spl[0]
+   
     if(spl[0] == "!!"):
         all_mah_numbers.append(functions.get_chatbot_response(data['number']))
-    
-
+###------------------------------------------------------------------------------------------------------------------------------------------- 
     socketio.emit('all numbers', {'numbers': all_mah_numbers})
     socketio.emit('all users', {'users': all_users})
-        
-
 
 if __name__ == '__main__':
     socketio.run(

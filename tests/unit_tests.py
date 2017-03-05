@@ -89,8 +89,8 @@ class ChatBotResponseTest(unittest.TestCase):
         response = functions.get_chatbot_response('!! joke')
         for i in jokes:
             if str(response['number']) == str(i):
-                print i
-                self.assertEqual(str(response['number']),str(i))
+               k = i
+        self.assertEqual(str(response['number']), k)
             
         
 if __name__ == '__main__':
