@@ -13,7 +13,7 @@ class SocketIOTestCase(unittest.TestCase):
             'hello to client'
         )
         data = from_server['args'][0]
-        self.assertEquals(data['message'], 'Hey there!')
+        self.assertEquals(data['message'], 'all numbers')
     # def test_server_relays_message(self):
     #     client = app.socketio.test_client(app.app)
     #     client.emit('new message', {'name':"TestUser_1",
