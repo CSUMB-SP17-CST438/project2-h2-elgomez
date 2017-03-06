@@ -13170,7 +13170,7 @@ var Content = exports.Content = function (_React$Component) {
                         { href: n.link },
                         n.link
                     ),
-                    React.createElement('img', { src: n.picL, width: '50%', height: '50%' })
+                    React.createElement('img', { src: n.picL })
                 );
             });
 

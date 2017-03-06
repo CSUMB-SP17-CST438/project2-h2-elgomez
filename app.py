@@ -122,11 +122,33 @@ def on_new_number(data):
     elif (data['number'] != "connected"):
         
         if data['facebook_user_token'] != '':
-            all_mah_numbers.append({
-                'name': json['name'],
-                'picture': json['picture']['data']['url'],
-                'number': data['number']
-            })
+            if links.checkURL(data['number']):
+                t1 = links.isImage(data['number'])
+                print t1
+                if t1 == True:
+                    all_mah_numbers.append({
+                        'name': json['name'],
+                        'picture': json['picture']['data']['url'],
+                        'number': "",
+                        'link': "",
+                        'picL': data['number']
+                    })
+                else:
+                    all_mah_numbers.append({
+                            'name': json['name'],
+                            'picture': json['picture']['data']['url'],
+                            'number': "",
+                            'link': data['number'],
+                            
+                        })
+            else:
+                all_mah_numbers.append({
+                        'name': json['name'],
+                        'picture': json['picture']['data']['url'],
+                        'number': data['number'],
+                        'link': "",
+                       
+                    })
         elif data['facebook_user_token'] == '' :
             t = links.checkURL(data['number'])
             print "**********************************" + str(links.checkURL(data['number']))

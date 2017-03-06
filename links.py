@@ -7,5 +7,11 @@ def checkURL(message):
 def isImage(message):
     if(message[-4:] == ".jpg"):
         return True
+    elif(message[-4:] == ".gif"):
+        return True
+    elif(message[-4:] == ".png"):
+        return True
+    elif(message[-5:] == ".jpeg"):
+        return True
     else:
         return False

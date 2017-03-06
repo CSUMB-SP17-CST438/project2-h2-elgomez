@@ -40,7 +40,7 @@ export class Content extends React.Component {
         let numbers = this.state.numbers.map((n, index) =>
            <li key={index}>
                 <img src={n.picture} />
-                {n.name}:{n.number} <a href={n.link}>{n.link}</a><img src={n.picL}  width="50%" height="50%" />
+                {n.name}:{n.number} <a href={n.link}>{n.link}</a><img src={n.picL} />
             </li>
         );
         
