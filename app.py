@@ -22,6 +22,7 @@ def hello():
 
 @socketio.on('connect')
 def on_connect():
+    socketio.emit('all numbers', {'numbers': all_mah_numbers})
     socketio.emit('hello to client', {
         'message': 'Hey there!'
     })
@@ -120,8 +121,6 @@ def on_new_number(data):
 ## APPEND Facebook user message to list---------------------------------------------------------------------------------------------------------------------------------------------
     elif (data['number'] != "connected"):
         
-        
-        print "*****************************************************:" + data['facebook_user_token']
         if data['facebook_user_token'] != '':
             all_mah_numbers.append({
                 'name': json['name'],
@@ -129,13 +128,44 @@ def on_new_number(data):
                 'number': data['number']
             })
         elif data['facebook_user_token'] == '' :
-            response2 = requests.get('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' + data['google_user_token'])
-            json2 = response2.json()
-            all_mah_numbers.append({
-                'name': json2['name'],
-                'picture': json2['picture'],
-                'number': data['number']
-            })
+            t = links.checkURL(data['number'])
+            print "**********************************" + str(links.checkURL(data['number']))
+            
+            if links.checkURL(data['number']):
+                t1 = links.isImage(data['number'])
+                print t1
+                if t1 == True:
+                    response2 = requests.get('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' + data['google_user_token'])
+                    json2 = response2.json()
+                    print "**********************************************************************************" + data['number']
+                    all_mah_numbers.append({
+                        'name': json2['name'],
+                        'picture': json2['picture'],
+                        'number': "",
+                        'link': "",
+                        'picL': data['number']
+                    })
+                else:
+                    response2 = requests.get('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' + data['google_user_token'])
+                    json2 = response2.json()
+                    all_mah_numbers.append({
+                        'name': json2['name'],
+                        'picture': json2['picture'],
+                        'number': "",
+                        'link': data['number'],
+                        'n.picL': ""
+                    })
+            else:
+                response2 = requests.get('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' + data['google_user_token'])
+                json2 = response2.json()
+                all_mah_numbers.append({
+                    'name': json2['name'],
+                    'picture': json2['picture'],
+                    'number': data['number'],
+                    'link': "",
+                    'n.picL': ""
+                })
+        
 ##---------------------------------------------------------------------------------------------------------------------------------------------
     socketio.emit('all numbers', {'numbers': all_mah_numbers})
     socketio.emit('all users', {'users': all_users})

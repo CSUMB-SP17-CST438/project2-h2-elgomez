@@ -6,7 +6,7 @@ class ServerIntegrationTestCase(
     def create_app(self):
         return app.app
 
-    def test_server_sends_hello(self):
+    def test_server_url(self):
         r = requests.get(self.get_server_url())
         print r.url
         self.assertEquals(r.url, 'http://localhost:5000/')

@@ -13162,8 +13162,15 @@ var Content = exports.Content = function (_React$Component) {
                     { key: index },
                     React.createElement('img', { src: n.picture }),
                     n.name,
-                    ': ',
-                    n.number
+                    ':',
+                    n.number,
+                    ' ',
+                    React.createElement(
+                        'a',
+                        { href: n.link },
+                        n.link
+                    ),
+                    React.createElement('img', { src: n.picL, width: '50%', height: '50%' })
                 );
             });
 
