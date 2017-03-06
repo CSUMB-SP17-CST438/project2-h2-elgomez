@@ -10,7 +10,7 @@ class SocketIOTestCase(unittest.TestCase):
         from_server = r[0]
         self.assertEquals(
             from_server['name'],
-            'hello to client'
+            'all numbers'
         )
         data = from_server['args'][0]
         self.assertEquals(data['message'], 'all numbers')
