@@ -25,4 +25,4 @@ The last known problem is that the page has a scroll bar on some resolutions and
 More functionallity with the league of legends API. The league api is a very powerful tool that can get stats and references to in game objects as well as give links to replays of matches and give a link to view a featured match through their spectate function.
 
 Postgres and the user list are the most pressing improvements. By making these function with more consistancy the reliability and overall user experience would be much higher.
-#### I would Like to opt out of any imporvements from milestone 1
+#### Link To Heroku Deployment
