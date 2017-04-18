@@ -26,3 +26,4 @@ More functionallity with the league of legends API. The league api is a very pow
 
 Postgres and the user list are the most pressing improvements. By making these function with more consistancy the reliability and overall user experience would be much higher.
 #### Link To Heroku Deployment
+https://enigmatic-lake-69076.herokuapp.com/
